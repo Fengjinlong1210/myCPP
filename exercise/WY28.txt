@@ -1,0 +1,73 @@
+//跳石板：动态规划问题小易来到了一条石板路前，每块石板上从1挨着编号为：1、2、3.......
+这条石板路要根据特殊的规则才能前进：对于小易当前所在的编号为K的 石板，小易单次只能往前跳K的一个约数(不含1和K)步，即跳到K+X(X为K的一个非1和本身的约数)的位置。 小易当前处在编号为N的石板，他想跳到编号恰好为M的石板去，小易想知道最少需要跳跃几次可以到达。
+例如：
+N = 4，M = 24：
+4->6->8->12->18->24
+于是小易最少需要跳跃5次，就可以从4号石板跳到24号石板
+
+#include <iostream>
+#include <vector>
+#include <climits>
+#include <cmath>
+using namespace std;
+
+void get_factor(int num, vector<int>& fac)
+{
+    int i = 0;
+    for(i = 2; i <= sqrt(num); ++i)
+    {
+        if(num % i == 0)
+        {
+            fac.push_back(i);
+            if(i != num / i)
+            {
+                fac.push_back(num / i);
+            }
+        }
+    }
+}
+
+int getstep(int n, int m)
+{
+    //创建m+1大小的数组
+    vector<int> v(m + 1, INT_MAX);
+    v[n] = 0;
+    //从n开始遍历数组
+    int i = 0;
+    for(i = n; i < m; ++i)
+    {
+        //获取i位置的余数
+        vector<int> fac;
+        get_factor(i, fac);
+
+        int j = 0;
+        for(j = 0; j < fac.size(); ++j)
+        {
+            if(v[i] == INT_MAX)
+            {
+                continue;
+            }
+
+            if(i + fac[j] <= m && v[i + fac[j]] != INT_MAX)
+            {
+                //调整步长
+                v[i + fac[j]] = (v[i + fac[j]] > v[i] + 1) ? v[i] + 1 : v[i + fac[j]];
+            }
+            else if(i + fac[j] <= m) //v数组的这个位置为INT_MAX
+            {
+                v[i + fac[j]] = v[i] + 1;
+            }
+        }
+    }
+
+    return v[m] == INT_MAX ? -1 : v[m];
+}
+
+int main() 
+{
+    int n, m;
+    cin >> n >> m;
+    int cnt = getstep(n, m);
+    cout << cnt << endl;
+}
+
