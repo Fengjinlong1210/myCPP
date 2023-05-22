@@ -1,0 +1,106 @@
+//二叉树的公共祖先
+//从根节点向下遍历，如果两个字节点分别在这个节点左边和右边，那么这个节点就是公共父节点
+//如果都在左边，说明公共节点一定在该节点的左边，
+//如果都在右边，说明公共节点一定在该节点的右边
+
+bool inTree(TreeNode* root, int x)
+{
+    if(root == nullptr)
+        return false;
+
+    if(root->val == x)
+    {
+        return true;
+    }
+
+    return inTree(root->left, x) || inTree(root->right, x);
+
+}
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        if(p == root || q == root)
+            return root;
+        bool qInLeft = inTree(root->left, q->val);
+        bool pInLeft = inTree(root->left, p->val);
+        bool qInRight = !qInLeft;
+        bool pInRight = !pInLeft;
+        
+        if((qInLeft && pInRight) || (qInRight && pInLeft))
+            return root;
+
+        if(qInLeft && pInLeft)
+        {
+            return lowestCommonAncestor(root->left, p, q);
+        }
+        else
+        {
+            return lowestCommonAncestor(root->right, p, q);
+        }
+
+
+    }
+};
+
+//转换成链表相交问
+//先用栈存取p和q的路径节点
+//从后往前找公共节点
+
+bool GetPath(TreeNode* root, int x, stack<TreeNode*>& st)
+{
+    if(root == nullptr)
+        return false;
+    
+    st.push(root);
+    if(root->val == x)
+    {
+        return true;
+    }
+
+    if(GetPath(root->left, x, st))
+    {
+        return true;
+    }
+
+    if(GetPath(root->right, x, st))
+    {
+        return true;
+    }
+
+    st.pop();
+    return false;
+}
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        stack<TreeNode*> pst;
+        stack<TreeNode*> qst;
+
+        GetPath(root, p->val, pst);
+        GetPath(root, q->val, qst);
+        
+        while(pst.size() != qst.size())
+        {
+            if(pst.size() > qst.size())
+            {
+                pst.pop();
+            }
+            else
+            {
+                qst.pop();
+            }
+        }
+
+        while(qst.top() != pst.top())
+        {
+            qst.pop();
+            pst.pop();
+        }
+
+        return qst.top();
+    }
+};
