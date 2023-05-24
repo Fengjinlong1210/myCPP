@@ -1,0 +1,41 @@
+
+ //二叉树的前序遍历。-- 非递归
+ //先把最左侧的一串节点放入栈中
+ //每次从栈顶取出元素，把这个元素的右节点视为一个树的根
+ //然后继续按照这个规则，把所有节点全部压入栈中，同时记录节点值，
+ //当栈为空时，就遍历完了
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) 
+    {
+        stack<TreeNode*> st;
+        vector<int> ret;
+        if(root == nullptr)
+        {
+            return {};
+        }
+        //把最左一串节点放入栈中
+        TreeNode* cur = root;
+        while(cur)
+        {
+            st.push(cur);
+            ret.push_back(cur->val);
+            cur = cur->left;
+        }
+        
+        while(!st.empty())  //判断栈空
+        {
+            cur = st.top();
+            st.pop();
+            cur = cur->right;
+            while(cur)
+            {
+                st.push(cur);
+                ret.push_back(cur->val);
+                cur = cur->left;
+            }
+        }
+
+        return ret;
+    }
+};
