@@ -1,0 +1,84 @@
+前K个高频单词
+
+解法1：
+struct Compare
+{
+    // bool operator()(const pair<string, int>& left, const pair<string, int>& right)
+    // {
+    //     return left.second > right.second;
+    // }
+
+    bool operator()(const pair<string, int>& left, const pair<string, int>& right)
+    {
+        return (left.second > right.second) || ((left.second == right.second) && left.first < right.first);
+    }
+};
+
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) 
+    {
+        //将所有单词放入map并且计数
+        map<string, int> m;
+        for(auto& str : words)
+        {
+            m[str]++;
+        }
+       
+        //将pair存入vector，按照出现次数进行稳定排序
+        //如果不稳定，会打乱相对顺序
+        //需要自己定义比较函数，因为pair的默认比较函数不符合要求
+        vector<pair<string, int>> v(m.begin(), m.end());
+        //stable_sort(v.begin(), v.end(), Compare());
+        sort(v.begin(), v.end(), Compare());
+
+        //排序后，把返回值存入vector并返回
+        vector<string> ret;
+        for(int i = 0; i < k; ++i)
+        {
+            ret.push_back(v[i].first);
+        }
+        
+        return ret;
+    }
+};
+
+解法2：
+struct Compare
+{
+    // bool operator()(const pair<string, int>& left, const pair<string, int>& right)
+    // {
+    //     return left.second > right.second;
+    // }
+
+    bool operator()(const pair<string, int>& left, const pair<string, int>& right) const //加上const
+    {
+        return (left.second > right.second) || ((left.second == right.second) && left.first < right.first);
+    }
+};
+
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) 
+    {
+        //将所有单词放入map并且计数
+        map<string, int> m;
+        for(auto& str : words)
+        {
+            m[str]++;
+        }
+
+        //用multiset直接存储+比较
+        multiset<pair<string, int>, Compare> sortset(m.begin(), m.end());
+
+        //排序后，把返回值存入vector并返回
+        vector<string> ret;
+        auto it = sortset.begin();
+        while(k--)
+        {
+            ret.push_back(it->first);
+            ++it;
+        }
+        return ret;
+    }
+};

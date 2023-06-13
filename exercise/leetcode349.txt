@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) 
+    {
+        //找两个数组的交集：
+        //1.对两个数组排序并且去重
+        //2.从头开始对两个数组遍历，如果相同就是交集，不同就让小的++
+
+        set<int> s1;
+        set<int> s2;
+        for(auto e : nums1)
+            s1.insert(e);
+        for(auto e : nums2)
+            s2.insert(e);
+        
+        auto it1 = s1.begin();
+        auto it2 = s2.begin();
+        vector<int> ret;
+
+        while(it1 != s1.end() && it2 != s2.end())
+        {
+            if(*it1 == *it2)
+            {
+                ret.push_back(*it1);
+                ++it1;
+                ++it2;
+            }
+            else
+            {
+                if(*it1 > *it2)
+                    ++it2;
+                else
+                    ++it1;
+            }
+        }
+
+        return ret;
+    }
+};
