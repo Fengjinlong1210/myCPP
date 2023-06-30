@@ -1,0 +1,34 @@
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
+使得所有奇数在数组的前半部分，所有偶数在数组的后半部分。
+
+//解法1: 不打乱相对顺序
+//从前向后找奇数, 定义一个int, 记录目前奇数还原到了第几位
+//找到奇数后, 把前面的偶数向后移动, 注意不要移动到已经安排好的奇数
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) 
+    {  
+        int k = 0; 
+        for(int i = 0; i < nums.size(); ++i)
+        { 
+            if(nums[i] & 1)
+            { 
+                int temp = nums[i];  
+                int j = i; 
+                while(j > k)
+                {  
+                    nums[j] = nums[j-1];
+                    j--; 
+                }
+                nums[k++] = temp;  
+            } 
+        
+        }
+        return nums;
+    }
+
+};
+
+//解法二:双指针遍历, 从前面找偶数, 后面找奇数, 然后交换
+
+//解法三:遍历两次, 第一次把奇数放到新数组, 第二次把偶数放到新数组

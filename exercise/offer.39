@@ -1,0 +1,56 @@
+找数组中出现次数超过一半的数字
+
+解法1:众数法
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) 
+    {
+        //众数法
+        int cnt = 0;
+        int ret;
+        for(auto& e : nums)
+        {
+            if(cnt == 0)
+            {
+                ++cnt;
+                ret = e;
+            }
+            else{
+            if(ret != e)
+            {
+                --cnt;
+            }
+            else
+            {
+                ++cnt;
+            }
+            }
+        }
+        return ret;
+    }
+};
+
+解法2:利用map计算出现次数
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) 
+    {
+        unordered_map<int, int> m;
+        for(auto& e : nums)
+        {
+            m[e]++;
+        }
+        
+        auto it = m.begin();
+        int ret = 0;
+        while(it != m.end())
+        {
+            if(it->second > nums.size() / 2)
+            {
+                ret = it->first;
+            }
+            ++it;
+        }
+        return ret;
+    }
+};

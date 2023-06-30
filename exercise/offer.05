@@ -1,0 +1,72 @@
+替换字符串中的空格
+
+解法1:双指针, 提前计算好空间, 从后往前移动, 如果遇到空格就替换
+class Solution {
+public:
+    string replaceSpace(string s) 
+    {
+        //双指针法
+        int cnt = 0;
+        int length = s.size();
+        for(auto& e : s)
+        {
+            if(e == ' ')
+            {
+                ++cnt;
+            }
+        }
+
+        s.resize(length + 2 * cnt);
+
+        //定义两个指针
+        int slow = length;
+        int fast = length + 2 * cnt;
+
+        while(slow >= 0 && fast >= 0)
+        {
+            if(s[slow] != ' ')
+            {
+                s[fast] = s[slow];
+                --slow;
+                --fast;
+            }
+            else
+            {
+                s[fast] = '0';
+                --fast;
+                s[fast] = '2';
+                --fast;
+                s[fast] = '%';
+                --fast;
+                --slow;
+            }
+        }
+
+        return s;
+    }
+};
+
+
+解法2:利用string的+=, 开辟新string
+class Solution {
+public:
+    string replaceSpace(string s) 
+    {
+        string ret;
+        string str = "%20";
+
+        for(size_t i = 0; i < s.size(); ++i)
+        {
+            if(s[i] != ' ')
+            {
+                ret += s[i];
+            }
+            else
+            {
+                ret += str;
+            }
+        }
+
+        return ret;
+    }
+};
