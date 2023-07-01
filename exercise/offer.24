@@ -1,0 +1,20 @@
+反转单链表:定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) 
+    {
+        ListNode* prev = nullptr;
+        ListNode* cur = head;
+        while(cur)
+        {
+            ListNode* next = cur->next;
+            cur->next = prev;
+
+            prev = cur;
+            cur = next;
+        }
+
+        return prev;
+    }
+};
