@@ -1,0 +1,51 @@
+判断一个二叉树是否是另一个二叉树的子树
+
+
+class Solution {
+public:
+    bool _isSubTree(TreeNode* A, TreeNode* B)
+    {
+        //如果b空, 说明已经判断完,
+        if(B == nullptr)
+        {
+            return true;
+        }
+        //a先空或值不想等都不构成子树
+        if(A == nullptr || A->val != B->val)
+        {
+            return false;
+        }
+        //如果这一层想等, 再分别判断左右子树
+        return _isSubTree(A->left, B->left) && _isSubTree(A->right, B->right);
+    }
+    
+    通过这个函数，获取与A节点相等值的节点，通过引用来让主函数获取
+    void getSameNode(TreeNode* A, TreeNode* B, TreeNode*& ret)
+    {
+        if(A == nullptr || B == nullptr)
+        {   
+            return;
+        }
+
+        if(A->val == B->val)
+        {
+            ret = A;
+        }
+        getSameNode(A->left, B, ret);
+        getSameNode(A->right, B, ret);
+
+    }
+
+    bool isSubStructure(TreeNode* A, TreeNode* B) 
+    {
+        if(A == nullptr || B == nullptr)
+            return false;
+
+        //先判读当前节点能不能构成子树
+        //在递归判断左右子树
+        TreeNode* sameNode = A;
+        获取到开始判断的节点
+        getSameNode(A, B, sameNode);
+        return _isSubTree(sameNode, B);
+    }
+};
