@@ -1,0 +1,34 @@
+二叉树重建问题
+递归解决
+
+class Solution {
+public:
+    TreeNode* _buildTree(vector<int>& preorder, int prestart, int preend, vector<int>& inorder, int instart, int inend)
+    {
+        if(prestart > preend || instart > inend)
+        {
+            return nullptr;
+        }
+        int i = 0;
+        for(i = 0; i < inend; ++i)
+        {
+            if(inorder[i] == preorder[prestart])
+                break;
+        }
+        //从i分成两部分
+        //[pre_start, i), i, [i + 1, pre_end]
+    
+        TreeNode* root = new TreeNode(preorder[prestart]);
+        root->left = _buildTree(preorder, prestart + 1, prestart + i - instart, inorder, instart, i - 1);
+        //i - instart是左子树的长度
+        root->right = _buildTree(preorder, prestart + i - instart + 1, preend, inorder, i + 1, inend);
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+    {
+        int n = preorder.size();
+        TreeNode* ret = _buildTree(preorder, 0, n - 1, inorder, 0, n - 1);
+        return ret;
+    }
+};
