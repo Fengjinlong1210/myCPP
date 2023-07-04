@@ -1,0 +1,25 @@
+翻转二叉树
+交换左右节点，然后向下递归
+class Solution {
+public:
+    void swapNode(TreeNode* root)
+    {
+        if(root == nullptr)
+        {
+            return;
+        }
+
+        TreeNode* tmp = root->left;
+        root->left = root->right;
+        root->right = tmp;
+
+        swapNode(root->left);
+        swapNode(root->right);
+    }
+
+    TreeNode* mirrorTree(TreeNode* root) 
+    {
+        swapNode(root);
+        return root;
+    }
+};

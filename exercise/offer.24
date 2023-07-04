@@ -18,3 +18,23 @@ public:
         return prev;
     }
 };
+
+方法二：头插节点
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) 
+    {
+        //头插节点
+        ListNode* cur = head;
+        ListNode* newhead = nullptr;
+        while(cur)
+        {
+            ListNode* newnode = cur;
+            cur = cur->next;
+
+            newnode->next = newhead;
+            newhead = newnode;
+        }
+        return newhead;
+    }
+};
