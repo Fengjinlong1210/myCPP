@@ -1,0 +1,25 @@
+层序遍历二叉树
+
+class Solution {
+public:
+    vector<int> levelOrder(TreeNode* root) 
+    {
+        if(root == nullptr) return {};
+        queue<TreeNode*> _q;
+        vector<int> ret;
+        TreeNode* cur = root;
+        _q.push(cur);
+        while(!_q.empty())
+        {
+            TreeNode* node = _q.front();
+            ret.push_back(node->val);
+            if(node->left)
+                _q.push(node->left);
+            if(node->right)
+                _q.push(node->right);
+            _q.pop();
+        }
+
+        return ret;
+    }
+};
