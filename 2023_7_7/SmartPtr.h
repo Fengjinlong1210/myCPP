@@ -50,6 +50,7 @@ public:
 	{
 		//两个对象指向同一块空间，引用计数++
 		AddCount();
+		//std::cout << "count = " << *_pcount << std::endl;
 	}
 
 	SmartPtr<T>& operator=(const SmartPtr& sp)
@@ -102,6 +103,7 @@ private:
 	void Release()
 	{
 		_pmtx->lock();
+		bool flag = false;
 		if (--(*_pcount) == 0 && _ptr)
 		{
 			std::cout << "delete" << std::endl;
@@ -109,8 +111,13 @@ private:
 			delete _pcount;
 
 			//锁的释放
+			flag = true;
 		}
 		_pmtx->unlock();
+		if (flag == true)
+		{
+			delete _pmtx;
+		}
 	}
 private:
 	T* _ptr;

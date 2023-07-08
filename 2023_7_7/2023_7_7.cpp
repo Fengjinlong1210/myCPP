@@ -17,7 +17,19 @@ void Test_sp1()
 	cout << "sp2 = " << *sp2 << endl;
 }
 
-//auto thread_func = [](SmartPtr<int>& sp, int n, mutex& mtx)
+auto thread_func = [](SmartPtr<int>& sp, int n, mutex& mtx)
+{
+	int i = 0;
+	for (; i < n; ++i)
+	{
+		SmartPtr<int> tmp(sp);
+		//cout << "count = " << sp.get_count() << endl;
+	}
+	//cout << "&sp = " << &sp << endl;
+
+};
+
+//auto thread_func = [](SmartPtr<int>& sp, int n)
 //{
 //	int i = 0;
 //	for (; i < n; ++i)
@@ -26,29 +38,21 @@ void Test_sp1()
 //	}
 //};
 
-auto thread_func = [](SmartPtr<int>& sp, int n)
-{
-	int i = 0;
-	for (; i < n; ++i)
-	{
-		SmartPtr<int> tmp(sp);
-	}
-};
-
 void Test_thread()
 {
-	int N = 100;
+	int N = 1000;
 	mutex mtx;
 	SmartPtr<int> sp(new int(100));
-	//thread t1(thread_func, ref(sp), N, ref(mtx));
-	//thread t2(thread_func, ref(sp), N, ref(mtx));
-	thread t1(thread_func, ref(sp), N);
-	thread t2(thread_func, ref(sp), N);
+	cout << "&sp = " << &sp << endl;
+	thread t1(thread_func, ref(sp), N, ref(mtx));
+	thread t2(thread_func, ref(sp), N, ref(mtx));
+	//thread t1(thread_func, ref(sp), N);
+	//thread t2(thread_func, ref(sp), N);
 
 	t1.join();
 	t2.join();
 	cout << "count : " << sp.get_count() << endl;
-
+	//this_thread::sleep_for(chrono::seconds(100));
 }
 
 int main()
