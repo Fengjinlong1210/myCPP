@@ -1,0 +1,31 @@
+二叉树中和为某一值的路径
+class Solution {
+public:
+    vector<vector<int>> _ret;
+    vector<int> _path;
+
+    void get_sum(TreeNode* root, int target)
+    {
+       if(root == nullptr)
+       {
+           return;
+       }
+       _path.emplace_back(root->val);
+       target -= root->val;
+       if(root->left == nullptr && root->right == nullptr && target == 0)
+       {
+           _ret.emplace_back(_path);
+       }
+       get_sum(root->left, target);
+       get_sum(root->right, target);
+       //往回走时, 要清除该节点的值
+       _path.pop_back();
+    }
+
+    vector<vector<int>> pathSum(TreeNode* root, int target) 
+    {
+        get_sum(root, target);
+        return _ret;
+    }
+
+};
