@@ -1,0 +1,25 @@
+栈的压入、弹出序列
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) 
+    {
+        stack<int> push_st;
+        int i = 0;
+        int j = 0;
+        int n = pushed.size();
+        for(; i < n; ++i)
+        {
+            //遍历入栈序列进行入栈
+            push_st.push(pushed[i]);
+            //当遇到与pop顺序相等的元素时pop
+            while(!push_st.empty() && push_st.top() == popped[j])
+            {
+                push_st.pop();
+                ++j;
+            }
+        }
+        
+        
+        return push_st.empty();
+    }
+};

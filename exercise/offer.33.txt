@@ -1,0 +1,39 @@
+判断一个序列是不是二叉搜索树的后序遍历
+class Solution {
+public:
+    bool _verifyPostorder(vector<int>& postorder, int begin, int end)
+    {
+        if(begin >= end)
+        {
+            return true;
+        }//结束条件
+
+        //排除根节点，将序列分成左右子树
+        int root = postorder[end]; //根的值
+        int i = begin;
+        while(i < end && postorder[i] < root)
+        {
+            ++i;
+        }
+        //出循环时，i找到了第一个大于root的值
+        //[begin, i - 1) i [i, end - 1]
+
+        //判断i后面的数字是否都大于root
+        for(int j = i; j < end; ++j)
+        {
+            if(postorder[j] <= root)
+                return false;
+        }
+
+        return _verifyPostorder(postorder, begin, i - 1) &&
+                _verifyPostorder(postorder, i, end - 1);
+    }
+
+    bool verifyPostorder(vector<int>& postorder) 
+    {
+        //最后一个结点是根节点，比根节点大的是右子树
+        //比根节点小的是左子树
+
+        return _verifyPostorder(postorder, 0, postorder.size() - 1);
+    }
+};

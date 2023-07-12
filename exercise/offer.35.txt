@@ -1,0 +1,86 @@
+复杂链表的复制
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+class Solution {
+public:
+    Node* copyRandomList(Node* head) 
+    {
+        //1. 先创建相等数量的结点挂在原结点的后面形成新的串
+        Node* cur = head;
+        Node* newhead = nullptr;
+        while(cur)
+        {
+            Node* next = cur->next;
+            Node* newnode = new Node(cur->val);
+            if(!newhead)
+            {
+                newhead = newnode;
+            }
+            newnode->next = next;
+            cur->next = newnode;
+
+            cur = next;
+        }
+
+        //2. 按照原本的random指针给新结点赋值
+        cur = head;
+        while(cur)
+        {
+            cur->next->random = cur->random == nullptr ? nullptr : cur->random->next;
+            cur = cur->next->next;
+        }
+
+        //3. 将新链表从旧链表中解耦
+        cur = head;
+        while(cur)
+        {
+            Node* next = cur->next;
+            cur->next = cur->next->next;
+            next->next = next->next == nullptr ? nullptr:next->next->next;
+
+            cur = cur->next;
+        }
+
+        return newhead;
+    }
+};
+
+
+
+//解法二 ： 哈希表存储键值对，用原链表做key，新链表做value
+class Solution {
+public:
+    unordered_map<Node*, Node*> node_map;
+    Node* copyRandomList(Node* head) 
+    {
+        Node* cur = head;
+        while(cur)
+        {
+            node_map[cur] = new Node(cur->val);
+            cur = cur->next;
+        }
+
+        cur = head;
+        while(cur)
+        {
+            node_map[cur]->next = node_map[cur->next];
+            node_map[cur]->random = node_map[cur->random];
+            cur = cur->next;
+        }
+
+        return node_map[head];
+    }
+};

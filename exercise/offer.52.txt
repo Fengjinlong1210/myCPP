@@ -1,0 +1,48 @@
+两个链表的公共结点
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+    {
+        //两个链表的公共结点
+        //先找出两个链表的长度差
+        int Alength = 0;
+        int Blength = 0;
+        ListNode* curA = headA;
+        ListNode* curB = headB;
+
+        while(curA)
+        {
+            ++Alength;
+            curA = curA->next;
+        }
+        while(curB)
+        {
+            ++Blength;
+            curB = curB->next;
+        }
+        //让长的链表先走, 走的步数是长度差
+        //默认让A先走, 如果B比A长, 就交换头
+        if(Alength < Blength)
+        {
+            curA = headB;
+            curB = headA;
+        }
+        else
+        {
+            curA = headA;
+            curB = headB;
+        }
+        int gap = abs(Alength - Blength);
+        while(gap--)
+        {
+            curA = curA->next;
+        }
+        while(curA != curB)
+        {
+            curA = curA->next;
+            curB = curB->next;
+        }
+
+        return curA;
+    }
+};
