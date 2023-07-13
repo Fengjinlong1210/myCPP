@@ -1,0 +1,38 @@
+//翻转字符串中单词顺序, 字符串前后可能都包含多个空格, 单词与单词之间也包含空格
+
+class Solution {
+public:
+    string reverseWords(string s) 
+    {
+        vector<string> vs;
+        string words;
+        for(auto ch : s)
+        {
+            if(ch == ' ')
+            {
+                if(!words.empty())
+                {
+                    vs.emplace_back(words);
+                    words.clear();
+                }
+            }
+            else
+            {
+                words += ch;
+            }
+        }
+        if(words.size() != 0)
+            vs.emplace_back(words);
+
+        string ret;
+        for(int i = vs.size() - 1; i >= 0; --i)
+        {
+            ret += vs[i];
+            if(i != 0)
+                ret += ' ';
+        }
+        return ret;
+    }
+};
+
+
