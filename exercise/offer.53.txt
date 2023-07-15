@@ -1,0 +1,32 @@
+0~n-1中缺失的数字
+
+一、二分法
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) 
+    {
+        int n = nums.size();
+        //对应位置的下标不等于值的时候，就是缺少数字的开始
+        //后面的所有数字都会不等
+        int left = 0;
+        int right = n - 1;
+        int mid;
+        while(left <= right)
+        {
+            mid = (left + right) / 2;
+            if(mid == nums[mid])	//如果相等，说明mid及前面的数字都没有缺失
+            {   
+                left = mid + 1;
+            }
+            else			//不相等时，缺少的数字可能等于mid也可能在mid前面
+					//当第一次mid正好在缺少的数字的后面时，right会指向缺少的数字，然后left会向右靠近，直到超越right一个单位
+					//此时left就是缺少的数字
+            {
+                right = mid - 1;
+            }
+        }
+        cout << mid << left << right << endl;
+
+        return left;
+    }
+};
