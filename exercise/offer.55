@@ -1,0 +1,54 @@
+平衡二叉树
+class Solution {
+public:
+    int get_depth(TreeNode* root)
+    {
+        //当前节点不为0, 高度+1
+        //每棵树的高度等于左子树和右子树中较大的一个
+        if(!root) return 0;
+        int leftH = get_depth(root->left);
+        int rightH = get_depth(root->right);
+        return leftH > rightH ? leftH + 1 : rightH + 1;
+    }
+
+    bool nodeBlanced(TreeNode* root)
+    {
+        if(!root) return true;
+        //判断左右子树的高度是否相差超过1
+
+        int leftH = get_depth(root->left);
+        int rightH = get_depth(root->right);
+
+        return abs(leftH - rightH) <= 1 && nodeBlanced(root->left) && nodeBlanced(root->right);
+    }
+
+    bool isBalanced(TreeNode* root) 
+    {
+        return nodeBlanced(root);
+    }
+};
+
+二:
+class Solution {
+public:
+    int height(TreeNode* root) {
+        if (root == NULL) {
+            return 0;
+        }
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+        if (leftHeight == -1 || rightHeight == -1 || abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        } else {
+            return max(leftHeight, rightHeight) + 1;
+        }
+    }
+    //后序遍历, 如果高度差大于1, 就返回-1
+    //如果左右有任意一颗子树高度差不满足, 也返回-1
+    //否则返回最大高度 + 1
+
+    bool isBalanced(TreeNode* root) {
+        return height(root) >= 0;
+    }
+};
+
