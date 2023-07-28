@@ -1,0 +1,58 @@
+数值的整数次方
+
+递归:
+class Solution {
+public:
+    //快速幂
+    double Pow(double x, long long n)   //这里一定是long long
+    {
+        if(n == 0) return 1.0;
+        //每次递归n/2次幂(向下取整), 如果n为偶数无需处理, 如果n为奇数, 需要再多乘一个x
+        double y = Pow(x, n / 2);
+        //例如 2^5 = 2^2 * 2^2 * 2;
+        if(n % 2 != 0)  return y * y * x;
+        return y * y;
+    }
+
+    double myPow(double x, int n) 
+    {
+        long long N = n;
+        //int的取值范围是2^(-31) ~ 2^31-1
+        //所以负数的最小值无法转换成正数的最大值
+        //#define INT_MIN (-INT_MAX - 1)
+        return (N >= 0) ? Pow(x, N) : 1.0/Pow(x, -N);
+    }
+};
+
+//迭代
+class Solution {
+public:
+    double myPow(double x, int n)   
+    {
+        //迭代
+        //x^n
+        //假设n用二进制表示为bn/bn-1/.../b3/b2/b1
+        //n的十进制就是1*b1 + 2*b2 + 4*b3 + 8*b4 + ... + 2^M *bn
+        //x^n = x^(1*b1 + 2*b2 + 4*b3 + 8*b4 + ... + 2^M *bn)
+        //.   = x^(1*b1) * x^(2*b2) * ... * x^(2^m *bn)
+
+        //例如2的5次方 0101
+        //2^1*1 * 2^0*2 * 2^1*4
+        long long N = n;
+        double res = 1.0;
+        if(N < 0)
+        {
+            N = -N;
+            x = 1/x;
+        }
+        while(N)
+        {
+            if(N & 1) res *= x;
+
+            //x翻倍
+            x *= x;
+            N >>= 1;
+        }
+        return res;
+    }
+};
