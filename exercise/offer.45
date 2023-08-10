@@ -1,0 +1,24 @@
+把数组排序成较小的数字
+class Solution {
+public:
+
+    string minNumber(vector<int>& nums) 
+    {
+        auto cmp = [](int num1, int num2)
+        {
+            string s1 = to_string(num1);
+            string s2 = to_string(num2);
+            string tmp1 = s1 + s2;
+            string tmp2 = s2 + s1;
+            return tmp1 < tmp2;
+        };
+
+        sort(nums.begin(), nums.end(), cmp);
+        string ret;
+        for(auto num : nums)
+        {
+            ret += to_string(num);
+        }
+        return ret;
+    }
+};
