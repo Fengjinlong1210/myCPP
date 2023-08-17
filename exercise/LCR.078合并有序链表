@@ -1,0 +1,66 @@
+合并k个有序链表
+利用归并思想, 将链表不断两两归并, 减少个数, 直到合并成为一个
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* ret = merge(lists, 0, lists.size() - 1);
+        return ret;
+    }
+
+    ListNode* MergeTwoList(ListNode* l1, ListNode* l2)
+    {
+        if (!l1)
+            return l2;
+        if (!l2)
+            return l1;
+        // 带头链表
+        ListNode *head = new ListNode(-1);
+        ListNode *tail = head;
+        ListNode *cur1 = l1;
+        ListNode *cur2 = l2;
+        while (cur1 && cur2)
+        {
+            if (cur1->val > cur2->val)
+            {
+                tail->next = cur2;
+                cur2 = cur2->next;
+            }
+            else
+            {
+                tail->next = cur1;
+                cur1 = cur1->next;
+            }
+            tail = tail->next;
+        }
+        if(cur1) tail->next = cur1;
+        if(cur2) tail->next = cur2;
+
+
+        return head->next;
+    }
+
+    ListNode* merge(vector<ListNode*>& lists, int start, int end)
+    {
+        if(start == end)
+        {
+            return lists[start];
+        }
+        if(start > end) return nullptr;
+        ListNode* l1 = merge(lists, start, (start + end)/2);
+        ListNode* l2 = merge(lists, (start + end)/2 + 1, end);
+        return MergeTwoList(l1, l2);
+    }
+
+};
+
+

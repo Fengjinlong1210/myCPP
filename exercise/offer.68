@@ -1,0 +1,77 @@
+搜索二叉树的公共节点
+解法一:遍历两次, 记录两个路径, 对路径做比较
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void getPath(TreeNode* root, TreeNode* node, vector<TreeNode*>& v)
+    {
+        while (root != node)
+        {
+            v.push_back(root);
+            if (root && root->val > node->val)
+            {
+                root = root->left;
+            }
+            else if (root && root->val < node->val)
+            {
+                root = root->right;
+            }
+            else
+            {
+                break;
+            }
+        }
+        v.push_back(root);
+    }
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+            // 求出两个路径
+        vector<TreeNode *> vp;
+        vector<TreeNode *> vq;
+        getPath(root, p, vp);
+        getPath(root, q, vq);
+        int i = 0;
+        int minSize = min(vq.size(), vp.size());
+        for(; i < minSize; ++i)
+        {
+            if(vq[i] != vp[i])
+                break;
+        }
+        return vq[i - 1];
+    }
+};
+
+解法二:遍历一次, 找到第一个分叉的节点, 就是公共节点
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        while(1)
+        {
+            //找出第一个分叉的节点
+            if(p->val < root->val && q->val < root->val)
+            {
+                root = root->left;
+            }
+            else if(p->val > root->val && q->val > root->val)
+            {
+                root = root->right;
+            }
+            else
+            {
+                break;
+            }
+        } 
+
+        return root;
+    }
+};
