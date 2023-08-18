@@ -1,7 +1,5 @@
-.\cloud.cpp TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\CloudBackup_Client.vcxproj.user TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\CloudBackup_Client.vcxproj.filters TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\CloudBackup_Client.sln TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\CloudBackup_Client.vcxproj TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\dataManager.h TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
-.\util.h TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA
+.\back_dir\util-win.h util-win.h-5393-1692344364
+.\back_dir\dataManager-win.h dataManager-win.h-2430-1692267597
+.\back_dir\test.txt test.txt-8192-1692345006
+.\back_dir\backup - win.h backup - win.h-2959-1692333503
+.\back_dir\cloud - win.cpp cloud - win.cpp-528-1692332901

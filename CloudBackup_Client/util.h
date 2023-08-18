@@ -61,12 +61,13 @@ namespace Cloud
         // 截取最后的文件名
         std::string FileName()
         {
-            auto pos = _filename.rfind('/');
-            if (pos == std::string::npos)
-            {
-                return _filename;
-            }
-            return _filename.substr(pos + 1);
+            //auto pos = _filename.rfind('/');
+            //if (pos == std::string::npos)
+            //{
+            //    return _filename;
+            //}
+            //return _filename.substr(pos + 1);
+            return fs::path(_filename).filename().string();
         }
         // 获取指定位置开始制定长度的内容
         bool GetPosLen(std::string* body, size_t pos, size_t len)

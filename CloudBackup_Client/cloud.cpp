@@ -1,8 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "dataManager.h"
 #include "util.h"
+#include "backup.h"
 #define BACKUP_FILE "./backup.dat"
-
+#define BACKUP_DIR "./back_dir"
 int main()
 {
 	//Cloud::FileUtil fu("./");
@@ -13,15 +14,7 @@ int main()
 	//{
 	//	dataMgr.Insert(file, "TEST431ES13casTEAICSA32EIONCIAWJ123DDODafA");
 	//}
-	Cloud::DataManager dataMgr(BACKUP_FILE);
-	std::string str;
-	dataMgr.GetOneByKey(".\\cloud.cpp", &str);
-	std::cout << str << std::endl;
-	auto it = dataMgr._table.begin();
-	while (it != dataMgr._table.end())
-	{
-		std::cout << it->first << " " << it->second << std::endl;
-		++it;
-	}
+	Cloud::Backup instance(BACKUP_DIR, BACKUP_FILE);
+	instance.RunModule();
 	return 0;
 }
