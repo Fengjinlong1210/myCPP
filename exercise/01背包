@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() 
+{
+    int v, n;//v表示背包容量，n表示物品数量
+    cin >> v >> n;
+    vector<int> weight(n + 1); //物品重量
+    vector<int> val(n + 1);    //物品价值
+    for(int i = 1; i <= n; ++i)
+    {
+        cin >> weight[i] >> val[i];
+    }
+
+    //初始化dp数组
+    vector<vector<int>> dp(n + 1, vector<int>(v + 1, 0));
+    for(int i = 1; i <= n; ++i)
+    {
+        for(int j = 0; j <= v; ++j) //j表示当前背包最大容量容量
+        {
+            if(j >= weight[i])
+            {
+                //可以选择放入或不放入
+                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + val[i]);
+            }
+            else
+            {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+    cout << dp[n][v] << endl;
+    // for(int i = 1; i <= n; ++i)
+    // {
+    //     for(int j = 1; j <= v; ++j)
+    //     {
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    return 0;  
+}
+// 64 位输出请用 printf("%lld")
