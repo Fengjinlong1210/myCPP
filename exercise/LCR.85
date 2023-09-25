@@ -1,0 +1,41 @@
+正整数 n 代表生成括号的对数，请设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+
+class Solution {
+public:
+    pair<int, int> lr;
+    vector<string> ret;
+    string path;
+
+    void dfs(int start, int n)
+    {
+        if(start == 2 * n)
+        {
+            ret.push_back(path);
+            return;
+        }
+
+        //左括号数量大于等于右括号
+        if(lr.first < n)
+        {
+            path.push_back('(');
+            lr.first++;
+            dfs(start + 1, n);
+            path.pop_back();
+            lr.first--;
+        }
+        if(lr.first >= lr.second + 1)
+        {
+            path.push_back(')');
+            lr.second++;
+            dfs(start + 1, n);
+            path.pop_back();
+            lr.second--;
+        }
+    }
+
+    vector<string> generateParenthesis(int n) 
+    {
+        dfs(0, n);
+        return ret;
+    }
+};
