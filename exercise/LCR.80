@@ -1,0 +1,30 @@
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+class Solution {
+public:
+    bool judge[21] = {false};
+    vector<vector<int>> ret;
+    vector<int> path;
+
+    void dfs(int start, int k, int n)
+    {
+        if(path.size() == k)
+        {
+            ret.push_back(path);
+            return ;
+        }
+
+        for(int i = start; i <= n; ++i)
+        {
+            path.push_back(i);
+            dfs(i + 1, k, n);
+            path.pop_back();
+
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) 
+    {
+        dfs(1, k, n);
+        return ret;
+    }
+};
