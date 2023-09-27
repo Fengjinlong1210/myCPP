@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) 
+    {
+        //计构成target中的负数和的绝对值为neg
+        //则正数和为sum - neg
+        //nums总和为sum
+        //所以有target = sum - neg - neg
+        //所以 neg = (sum - target) / 2 , sum - target 必须为偶数, 否则不会成立
+        //这样就将寻找组成target的组合转换成了寻找负数和为neg的组合数量
+        //也就是从nums中寻找和为neg的组合, 01背包问题
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        int diff = sum - target;
+        if(diff < 0 || diff % 2 != 0) return 0;
+        int neg = diff / 2;
+
+        vector<vector<int>> dp(nums.size() + 1, vector<int>(neg + 1));
+        //初始化
+        for(int i = 0; i <= neg; ++i)
+        {
+            dp[0][i] = i == 0 ? 1 : 0;
+        }
+        for(int i = 1; i <= nums.size(); ++i)
+        {
+            for(int j = 0; j <= neg; ++j)
+            {
+                dp[i][j] = dp[i - 1][j];
+                if(j >= nums[i - 1])
+                {
+                    dp[i][j] += dp[i - 1][j - nums[i - 1]];
+                }
+            }
+        }
+        for(int i = 0; i <= nums.size(); ++i)
+        {
+            for(int j = 0; j <= neg; ++j)
+            {
+                cout << dp[i][j] << "\t";
+            }
+            cout << endl;
+        }
+        return dp[nums.size()][neg];
+    }
+};
+//解法二
+class Solution {
+public:
+    int cnt = 0;
+    int target;
+    void dfs(vector<int>& nums, int start, int sum)
+    {
+        if(start == nums.size())
+        {
+            if(sum == target)
+            {
+                cnt++;
+            }
+            return;
+        }
+
+        dfs(nums, start + 1, sum + nums[start]);
+        dfs(nums, start + 1, sum - nums[start]);
+    }
+
+    int findTargetSumWays(vector<int>& nums, int _target) 
+    {
+        target = _target;
+        dfs(nums, 0, 0);
+        return cnt;
+    }
+};
