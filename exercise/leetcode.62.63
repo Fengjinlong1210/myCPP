@@ -1,0 +1,73 @@
+//所有路径1
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) 
+    {
+
+        vector<vector<int>> dp(m, vector<int>(n));
+        for(int i = 0; i < m; ++i)
+        {
+            dp[i][0] = 1;
+        }
+        for(int i = 0; i < n; ++i)
+        {
+            dp[0][i] = 1;
+        }
+        for(int i = 1; i < m; ++i)
+        {
+            for(int j = 1; j < n; ++j)
+            {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+};
+
+//所有路径2
+
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) 
+    {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n));
+        bool flag = false;
+        //遇到第一个障碍，后面的就无法到达
+        for(int i = 0; i < m; ++i)
+        {
+            if(obstacleGrid[i][0] == 1)
+            {
+                flag = true;
+            }
+            dp[i][0] = flag ? 0 : 1;
+        }
+        for(int i = 0, flag = false; i < n; ++i)
+        {
+            if(obstacleGrid[0][i] == 1)
+            {
+                flag = true;
+            }
+            dp[0][i] = flag ? 0 : 1;
+        }
+
+        for(int i = 1; i < m; ++i)
+        {
+            for(int j = 1; j < n; ++j)
+            {
+                if(obstacleGrid[i][j] == 1)
+                {
+                    dp[i][j] = 0;
+                } 
+                else
+                {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+};
