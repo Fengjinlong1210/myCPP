@@ -1,0 +1,35 @@
+组合总和
+
+class Solution {
+public:
+    vector<vector<int>> ret;
+    vector<int> path;
+    vector<int> candidates;
+    int sum;
+    int target;
+
+    void dfs(int start)
+    {
+        for(int i = start; i < candidates.size(); ++i)
+        {
+            if(sum > target) return;
+            path.push_back(candidates[i]);
+            sum += candidates[i];
+            if(sum == target)
+            {
+                ret.push_back(path);
+            }
+            dfs(i);
+            sum -= candidates[i];
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& _candidates, int _target) 
+    {
+        target = _target;
+        candidates = _candidates;
+        dfs(0);
+        return ret;
+    }
+};
