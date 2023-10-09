@@ -1,0 +1,30 @@
+地下城游戏
+
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& board) 
+    {
+        int row = board.size();
+        int cols = board[0].size();
+        //从后向前填表
+        //dp[i][j]表示从(i, j)位置开始，到达终点所需要的最小的血量
+        //设当前需要的血量为x，如果向右走必须满足x + board[i][j] >= dp[i][j + 1]
+        //                  如果向下走必须满足x + board[i][j] >= dp[i + 1][j]
+        //也就是说，x的最小值为min(dp[i][j + 1], dp[i + 1][j]) - board[i][j]
+        //如果当前格子是加血的，即board[i][j] > 0, 可能会使x为负数，这不符合游戏规则
+        //所以x最小也要为1
+        //状态转移方程为dp[i][j] = max(1, min(dp[i + 1][j], dp[i][j + 1]) - board[i][j])
+        //在最外层会存在越界问题，所以要将dp表多加一行一列，初始化为INT_MAX
+        vector<vector<int>> dp(row + 1, vector<int>(cols + 1, INT_MAX));
+        dp[row][cols - 1] = dp[row - 1][cols] = 1;
+        for(int i = row - 1; i >= 0; --i)
+        {
+            for(int j = cols - 1; j >= 0; --j)
+            {
+                dp[i][j] = min(dp[i + 1][j], dp[i][j + 1]) - board[i][j];
+                dp[i][j] = max(1, dp[i][j]);
+            }
+        }
+        return dp[0][0];
+    }
+};
