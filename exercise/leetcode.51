@@ -1,0 +1,44 @@
+N皇后 
+
+class Solution {
+public:
+    bool col[10] = {false};
+    bool diag1[20] = {false}; //斜率为1的对角线
+    bool diag2[20] = {false}; //斜率为-1的对角线
+    void dfs(int r, int n, vector<vector<string>>& ret, vector<string> tmp)
+    {
+        if(r == n)
+        {
+            ret.push_back(tmp);
+            return;
+        }
+        for(int c = 0; c < n; ++c)
+        {
+            if(col[c] == true)
+                continue;
+            if(diag1[r - c + n] == true)
+               continue;
+            if(diag2[c + r] == true)
+               continue;
+            
+            tmp[r][c] = 'Q';
+            diag1[r - c + n] = diag2[c + r] = col[c] = true;
+            dfs(r + 1, n, ret, tmp);
+            diag1[r - c + n] = diag2[c + r] = col[c] = false;
+            tmp[r][c] = '.';
+        }
+    }
+
+    vector<vector<string>> solveNQueens(int n) 
+    {
+        vector<vector<string>> ret;
+        vector<string> tmp(n, string(n, '.')); 
+        for(auto & str : tmp)
+        {
+            cout << str << endl;
+        }
+        cout << endl;
+        dfs(0, n, ret, tmp);
+        return ret;
+    }
+};
