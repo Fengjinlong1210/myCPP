@@ -1,0 +1,27 @@
+将数组和减半的最小操作次数
+
+class Solution {
+public:
+    int halveArray(vector<int>& nums) 
+    {
+        double sum = 0;
+        int cnt = 0;
+        priority_queue<double> pq;
+        for(auto& num : nums)
+        {
+            pq.push(num);
+            sum += num;
+        }
+        double half = sum / 2.0;
+
+        while(sum > half)
+        {
+            double tmp = pq.top() / 2;
+            sum -= tmp;
+            pq.pop();
+            pq.push(tmp);
+            cnt++;
+        }
+        return cnt;
+    }
+};
