@@ -1,26 +1,26 @@
-将数组和减半的最小操作次数
+最大数
+给定一组非负整数 nums，重新排列每个数的顺序（每个数不可拆分）使之组成一个最大的整数。
+
+注意：输出结果可能非常大，所以你需要返回一个字符串而不是整数。
 class Solution {
 public:
-    int halveArray(vector<int>& nums) 
+    string largestNumber(vector<int>& nums) 
     {
-        double sum = 0;
-        int cnt = 0;
-        priority_queue<double> pq;
+        auto cmp = [](int x, int y)
+        {
+            string sx = to_string(x);
+            string sy = to_string(y);
+            string sum1 = sx + sy;
+            string sum2 = sy + sx;
+            return sum1 > sum2;
+        };x
+        sort(nums.begin(), nums.end(), cmp);
+        string ret;
         for(auto& num : nums)
         {
-            pq.push(num);
-            sum += num;
+            ret += to_string(num);
         }
-        double half = sum / 2.0;
-
-        while(sum > half)
-        {
-            double tmp = pq.top() / 2;
-            sum -= tmp;
-            pq.pop();
-            pq.push(tmp);
-            cnt++;
-        }
-        return cnt;
+        if(ret[0] == '0') ret = "0";
+        return ret;
     }
 };
