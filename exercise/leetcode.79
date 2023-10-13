@@ -1,0 +1,61 @@
+//单词搜索
+
+class Solution {
+public:
+    string word;
+    bool judge[7][7] = {false};
+    int row;
+    int col;
+    vector<vector<char>> board;
+    int dx[4] = {1, -1, 0, 0};
+    int dy[4] = {0, 0, -1, 1};
+
+    bool dfs(int r, int c, int pos)
+    {  
+        if(pos == word.size())
+        {
+            return true;
+        }
+        //通过坐标的方式向四个方向搜索
+        for(int k = 0; k < 4; ++k)
+        {
+            int x = r + dx[k];
+            int y = c + dy[k];
+            //只有当前位置没有越界、没有被使用过、且等于下一个字符时才向下递归
+            if(x >= 0 && x < row && y >= 0 && y < col && judge[x][y] == false && board[x][y] == word[pos])
+            {
+                judge[x][y] = true;
+                if(dfs(x, y, pos + 1))  //层层返回
+                {
+                    return true;
+                }
+                judge[x][y] = false;
+                //如果当前层不满足，需要回溯
+            }
+        }
+        return false;
+    }
+
+    bool exist(vector<vector<char>>& _board, string _word) 
+    {   
+        word = _word;
+        board = _board;
+        row = board.size();
+        col = board[0].size();
+        for(int i = 0; i < row; ++i)
+        {
+            for(int j = 0; j < col; ++j)
+            {
+                //遇到第一个单词时进入深搜
+                if(board[i][j] == word[0])
+                {
+                    judge[i][j] = true;
+                    if(dfs(i, j, 1)) return true;
+                    judge[i][j] = false;
+                }
+            }
+        }
+        return false;
+    }
+
+};
