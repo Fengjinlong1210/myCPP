@@ -1,0 +1,45 @@
+class Solution {
+public:
+    const int INF = 0x3f3f3f3f;
+    int maxProfit(vector<int>& prices) 
+    {
+        //f[i][0] 表示处于待买入状态时, 没有买股票
+        //f[i][1] 表示处于待买入状态时，已经完成了一次交易
+        //f[i][2] 表示处于待买入状态时，已经经历了两次交易
+        //g[i][0] 表示处于已买入待卖出状态时，没有完成交易
+        //g[i][1] 表示处于已买入待卖出状态时，完成了一次交易
+        //g[i][2] 表示处于已买入待卖出状态时，完成了两次交易
+        int n = prices.size();
+        vector<vector<int>> f(n, vector<int>(3, -INF));
+        vector<vector<int>> g(n, vector<int>(3, -INF));
+        g[0][0] = -prices[0];
+        f[0][0] = 0;
+        for(int i = 1; i < n; ++i)
+        {
+            for(int j = 0; j < 3; ++j)
+            {
+                g[i][j] = max(g[i - 1][j], f[i - 1][j] - prices[i]);
+                f[i][j] = f[i - 1][j];
+                if(j >= 1)
+                {
+                    f[i][j] = max(f[i - 1][j], g[i - 1][j - 1] + prices[i]);
+                }
+            }
+        }
+        int ret;
+        for(int i = 0; i < 3; ++i)
+        {
+            ret = max(ret, f[n - 1][i]);
+        }
+
+        return  ret;
+    }
+};
+
+
+
+
+
+
+
+
