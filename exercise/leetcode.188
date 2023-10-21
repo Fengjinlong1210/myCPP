@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) 
+    {
+        int INF = 0x3f3f3f3f;
+        int n = prices.size();
+        vector<vector<int>> f(n, vector<int>(k + 1, -INF));//可买入状态
+        vector<vector<int>> g(n, vector<int>(k + 1, -INF));//已买入未卖出状态
+        g[0][0] = -prices[0]; 
+        f[0][0] = 0;
+        for(int i = 1; i < n; ++i)
+        {
+            for(int j = 0; j <= k; ++j)
+            {
+                g[i][j] = max(g[i - 1][j], f[i - 1][j] - prices[i]);
+                f[i][j] = f[i - 1][j];
+                if(j >= 1)
+                    f[i][j] = max(f[i][j], g[i - 1][j - 1] + prices[i]);
+            }
+        }
+        int ret = 0;
+        for(int i = 0; i <= k; ++i)
+        {
+            ret = max(ret, f[n - 1][i]);
+        }
+        return ret;
+    }
+};
