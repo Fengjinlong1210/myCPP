@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maxfunc(vector<int>& nums)
+    {
+        int n = nums.size();
+        vector<int> dp(n);
+        dp[0] = nums[0];
+        int ret = dp[0];
+        for(int i = 1; i < n; ++i)
+        {
+            dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+            ret = max(ret, dp[i]);
+        }
+        return ret;
+    }
+
+    int minfunc(vector<int>& nums)
+    {
+        int n = nums.size();
+        vector<int> dp(n);
+        dp[0] = nums[0];
+        int ret = dp[0];
+        for(int i = 1; i < n; ++i)
+        {
+            dp[i] = min(dp[i - 1] + nums[i], nums[i]);
+            ret = min(ret, dp[i]);
+        }
+        return ret;
+    }
+
+    int maxSubarraySumCircular(vector<int>& nums) 
+    {
+        //有两种情况：
+        //1. 不需要同时选择头和尾
+        //2. 需要同时选择头尾---从中间选取连续和最小的子数组
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        int ret1 = maxfunc(nums);
+        int ret2 = minfunc(nums);
+        if(ret2 == sum)
+        {
+            return ret1;
+        }
+        return max(ret1, sum - ret2);
+    }
+};
+
+
