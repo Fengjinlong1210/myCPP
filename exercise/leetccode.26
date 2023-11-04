@@ -12,6 +12,7 @@ public:
         while(right < nums.size())
         {
             //先找到一个不相等的，然后放到left后面
+            //如果left和right相邻，仍然right是给自己复制
             if(nums[left] != nums[right])
             {
                 nums[++left] = nums[right];
