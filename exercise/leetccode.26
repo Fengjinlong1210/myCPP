@@ -1,0 +1,25 @@
+删除有序数组中的重复项
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) 
+    {
+        if(nums.size() == 1)
+        {
+            return 1;
+        }
+        int left = 0;
+        int right = 1;
+        while(right < nums.size())
+        {
+            //先找到一个不相等的，然后放到left后面
+            //如果left和right相邻，仍然right是给自己复制
+            if(nums[left] != nums[right])
+            {
+                nums[++left] = nums[right];
+            }
+            //无论找没找到不相等的，都要让right++
+            right++;
+        }
+        return left + 1;
+    }
+};
