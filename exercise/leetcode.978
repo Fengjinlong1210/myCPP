@@ -1,0 +1,41 @@
+给定一个整数数组 arr ，返回 arr 的 最大湍流子数组的长度 。
+
+如果比较符号在子数组中的每个相邻元素对之间翻转，则该子数组是 湍流子数组 。
+
+更正式地来说，当 arr 的子数组 A[i], A[i+1], ..., A[j] 满足仅满足下列条件时，我们称其为湍流子数组：
+class Solution {
+public:
+    int maxTurbulenceSize(vector<int>& arr) 
+    {
+        int n = arr.size();
+        vector<int> f(n, 1); //表示结尾处于上升状态时，数组的最大长度
+        vector<int> g(n, 1); //表示结尾处于下降状态时，数组的最大长度
+        int ret = 1;
+        for(int i = 1; i < n; ++i)
+        {
+            if(arr[i] > arr[i - 1])
+            {
+                //当前数组元素大于前一个元素, 需要考虑结尾处于下降状态的dp数组  
+                f[i] = g[i - 1] + 1;
+            }
+            else if(arr[i] < arr[i - 1])
+            {
+                g[i] = f[i - 1] + 1;
+            }
+            else
+            {
+                //相等情况不构成湍流数组  
+            }
+            ret = max(max(ret, f[i]), g[i]);
+        }   
+        for(int i = 0; i < n; ++i)
+        {
+            printf("f[%d] = %d, ", i, f[i]);
+        }
+        for(int i = 0; i < n; ++i)
+        {
+            printf("g[%d] = %d, ", i, g[i]);
+        }
+        return ret;
+    }
+};
