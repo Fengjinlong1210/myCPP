@@ -1,0 +1,35 @@
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) 
+    {
+        //创建集合用来存储单词，方便判断在于不在
+        unordered_set<string> hash;
+        for(auto& s : wordDict)
+        {
+            hash.insert(s);
+        }
+        //dp[i]表示到达i位置时，前面的串能否用字典组成
+        int n = s.size();
+        vector<bool> dp(n + 1);
+        dp[0] = true;
+        s = ' ' + s;        //用字符串对齐数组，不影响后续判断
+        for(int i = 1; i <= n; ++i)
+        {
+            //逐个判断从后到前的单词
+            for(int j = i; j >= 1; --j)
+            {
+                //如果前j - 1个位置能匹配上词典
+                //并且j位置后面的单词也在词典中，那么这个位置就可以全部匹配上
+                if(dp[j - 1] && hash.count(s.substr(j, i - j + 1)))
+                {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+};
