@@ -1,0 +1,36 @@
+467. 环绕字符串中唯一的子字符串
+
+class Solution {
+public:
+    int findSubstringInWraproundString(string s)
+    {
+        int n = s.size();
+        //单个字符一定会出现
+        //dp[i] 表示截止到i位置时，出现在base中的子串数量
+        vector<int>  dp(n, 1);
+        for(int i = 1; i < n; ++i)
+        {
+            //该条件满足，说明i位置与i-1位置的字符是连续的
+            if(s[i] - s[i - 1] == 1 || (s[i] == 'a' && s[i - 1] == 'z'))           
+            {
+                dp[i] = dp[i - 1] + 1;
+            }
+        }
+
+        //计算以每个字符结尾时，所有的子串总和
+        int hash[26] = {0};
+        for(int i = 0; i < n; ++i)
+        {
+            int index = s[i] - 'a';   //每个字母的下标位置
+            hash[index] = max(hash[index], dp[i]); 
+        }
+
+        //到这里，以每个字母为结尾的最大子串数量已经被存到hash中
+        int sum = 0;
+        for(auto num : hash)
+        {
+            sum += num;
+        }
+        return sum;
+    }
+};
