@@ -1,0 +1,53 @@
+寻找峰值
+// 首先，时刻知道 相邻元素不会相同
+//
+// 假设 A=mat[i][j] 是当前 i 行的最大值
+// 如果上方有一个相邻元素 B = mat[i-1][j], 满足 A < B 的话：
+//
+// 假设 B 所在行的最大值是 C, C 下面相邻的是 D
+// 那么肯定有 C >= B > A >= D, 也就是 C > D
+// 而且 C 已经是行内最大了，只需要继续考虑 C 和其上面的 E
+//
+//                   E
+//              B    C
+//      ------  A ---D------ i
+//
+// 1. 如果 E < C, 那么 C 是一个可行解.
+// 2. 如果 E > C, 继续假设 E 所在行的最大值 F
+//    假设 F 下面是 G, 根据刚才的逻辑可以知道 F > G
+//    (注意 C 是行内最大值, 且 E > C),  形成套娃逻辑
+//    如果持续陷入第 2 点情况，直到边缘第 1 行位置终止，即找到峰值.
+//    (因为题目假设周围被 -1 包裹)
+//
+//                  E      F
+//                  C      G
+// 
+// 综合来看，此时上方必有解, 这是可以二分的原因。
+
+class Solution {
+public:
+    vector<int> findPeakGrid(vector<vector<int>>& mat) 
+    {
+        //先计算出每一行的最大值
+        int low = 0;
+        int high = mat.size() - 1;
+        while(low <= high)
+        {
+            int mid = low + (high - low) / 2;
+            //算出中间行的最大值的下标
+            int index = max_element(mat[mid].begin(), mat[mid].end()) - mat[mid].begin();
+            if(mid > 0 && mat[mid - 1][index] > mat[mid][index])
+            {
+                high = mid - 1;
+                continue;
+            }
+            if(mid + 1 < mat.size() && mat[mid + 1][index] > mat[mid][index])
+            {
+                low = mid + 1;
+                continue;
+            }
+            return {mid, index};
+        }
+        return {};
+    }
+};
