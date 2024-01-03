@@ -1,0 +1,43 @@
+
+2487. 从链表中移除节点
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) 
+    {
+        stack<ListNode*> st;
+        // 所有节点入栈
+        ListNode* cur = head;
+        while(cur)
+        {
+            st.push(cur);
+            cout << cur->val << " ";
+            cur = cur->next;
+        }
+        //出栈时，记录当前已经出栈的最大的值，如果大于当前节点，当前节点就需要被移除
+        ListNode* newhead = nullptr;
+        while(!st.empty())
+        {
+            ListNode* tmp = st.top();
+            st.pop();
+            if(newhead == nullptr || tmp->val >= newhead->val)
+            {
+                tmp->next = newhead;
+                newhead = tmp;
+            }
+            else //tmp->val < max  当前节点需要被删除
+            {}
+        }
+        return newhead;
+    }
+};
