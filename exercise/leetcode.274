@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) 
+    {
+        // 排序可以使用计数排序，以空间换时间
+        int n = citations.size();
+        vector<int> arr(n + 1);
+        //arr[i]表示文献的被引用i次的文献个数，i表示文献引用次数
+        //当arr[i] >= i 时，被引用i次的文献
+        for(int i = 0; i < n; ++i)
+        {
+            if(citations[i] >= n)
+            {
+                //一个文献被引用次数大于文献个数时，记到被引用最多的位置即可，因为h不会大于n
+                arr[n]++;
+            }
+            else
+            {
+                arr[citations[i]]++;
+            }
+        }
+        // 从后向前遍历
+        int h = 0;
+        //得到了文献的被引用次数后，从后往前遍历   
+        for(int i = n; i >= 0; --i)
+        {
+            //h为当前累计引用次数大于等于i的文献个数
+            h += arr[i];
+            if(h >= i)
+                return i;
+        }
+        return 0;   
+    }
+};
+
+
+class Solution {
+public:
+    int hIndex(vector<int>& citations) 
+    {
+        sort(citations.begin(), citations.end());
+        // 从后向前遍历
+        int h = 0;
+        int index = citations.size() - 1;
+        for(; index >= 0; --index)
+        {
+            if(citations[index] > h)
+            {
+                h++;
+            }
+            else
+                break;
+        }
+        return h;
+    }
+};
